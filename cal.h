@@ -16,3 +16,6 @@ void ie_freeall(struct IcsElement *head);
 void ie_addchild(struct IcsElement *parent, struct IcsElement *child);
 void ie_print(struct IcsElement *element, int spaces);
 void ie_printall(struct IcsElement *element);
+
+// ics.c
+struct IcsElement *ics_fromfile(char *filename);
