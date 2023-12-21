@@ -3,13 +3,13 @@
 #include <string.h>
 #include "icstree.h"
 
-#define CE_CHILD_BUF_INCREMENT 16
+#define IE_CHILD_BUF_INCREMENT 16
 
-struct CalendarElement *ce_create(char *title, char *content, int preallocChildLength) {
-	struct CalendarElement *element = (struct CalendarElement *)malloc(sizeof(struct CalendarElement));
+struct IcsElement *ie_create(char *title, char *content, int preallocChildLength) {
+	struct IcsElement *element = (struct IcsElement *)malloc(sizeof(struct IcsElement));
 
 	if(preallocChildLength > 0) {
-		element->children = (struct CalendarElement **)malloc(sizeof(struct CalendarElement *) * preallocChildLength);
+		element->children = (struct IcsElement **)malloc(sizeof(struct IcsElement *) * preallocChildLength);
 	}
 
 	element->childCount = 0;
@@ -27,7 +27,7 @@ struct CalendarElement *ce_create(char *title, char *content, int preallocChildL
 }
 
 
-void ce_free(struct CalendarElement *element) {
+void ie_free(struct IcsElement *element) {
 	free(element->children);
 	free(element->name);
 	free(element->content);
@@ -35,18 +35,18 @@ void ce_free(struct CalendarElement *element) {
 	free(element);
 }
 
-void ce_freeall(struct CalendarElement *head) {
+void ie_freeall(struct IcsElement *head) {
 	for(int i = 0; i < head->childCount; i++) {
-		ce_freeall(head->children[i]);
+		ie_freeall(head->children[i]);
 	}
 
-	ce_free(head);
+	ie_free(head);
 }
 
-void ce_addchild(struct CalendarElement *parent, struct CalendarElement *child) {
+void ie_addchild(struct IcsElement *parent, struct IcsElement *child) {
 	if(parent->childCount >= parent->childBufLen) {
-		parent->children = (struct CalendarElement **)realloc(parent->children, (parent->childBufLen + CE_CHILD_BUF_INCREMENT) * sizeof(struct CalendarElement *));
-		parent->childBufLen = parent->childBufLen + CE_CHILD_BUF_INCREMENT;
+		parent->children = (struct IcsElement **)realloc(parent->children, (parent->childBufLen + IE_CHILD_BUF_INCREMENT) * sizeof(struct IcsElement *));
+		parent->childBufLen = parent->childBufLen + IE_CHILD_BUF_INCREMENT;
 	}
 
 	parent->children[parent->childCount] = child;
@@ -55,15 +55,15 @@ void ce_addchild(struct CalendarElement *parent, struct CalendarElement *child) 
 	child->parent = parent;
 }
 
-void ce_print(struct CalendarElement *element, int spaces) {
+void ie_print(struct IcsElement *element, int spaces) {
 	for(int i = 0; i < spaces; i++) printf("  ");
 	printf("%s: %s\n", element->name, element->content);
 
 	for(int i = 0; i < element->childCount; i++) {
-		ce_print(element->children[i], spaces + 1);
+		ie_print(element->children[i], spaces + 1);
 	}
 }
 
-void ce_printall(struct CalendarElement *element) {
-	ce_print(element, 0);
+void ie_printall(struct IcsElement *element) {
+	ie_print(element, 0);
 }

@@ -2,18 +2,18 @@
 #include "icstree.h"
 
 int main(void) {
-	struct CalendarElement *element = ce_create("test", "hello", 0);
-	struct CalendarElement *child = ce_create("child", "lole", 0);
-	ce_addchild(element, child);
+	struct IcsElement *element = ie_create("test", "hello", 0);
+	struct IcsElement *child = ie_create("child", "lole", 0);
+	ie_addchild(element, child);
 
 	for(int i = 0; i < 100; i++) {
-		struct CalendarElement *grandchild = ce_create("grandchild", "kehjfhj", 0);
-		ce_addchild(child, grandchild);
+		struct IcsElement *grandchild = ie_create("grandchild", "kehjfhj", 0);
+		ie_addchild(child, grandchild);
 	}
 
-	ce_printall(element);
+	ie_printall(element);
 
-	ce_freeall(element);
+	ie_freeall(element);
 
 	return 0;
 }

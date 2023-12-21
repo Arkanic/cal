@@ -5,9 +5,9 @@
 
 #define TITLE_BUF_LEN 128
 #define CONTENT_BUF_LEN 2048
-#define CE_MAX_DEPTH 16
+#define IE_MAX_DEPTH 16
 
-struct CalendarElement *head = 0;
+struct IcsElement *head = 0;
 
 void processLine(char *title, char *content);
 
@@ -65,19 +65,19 @@ int main(int argc, char *argv[]) {
 	fclose(fp);
 
 	// tree is now complete
-	ce_printall(head);
+	ie_printall(head);
 
-	ce_freeall(head);
+	ie_freeall(head);
 
 	return 0;
 }
 
-struct CalendarElement *parentStack[CE_MAX_DEPTH]; int parentStackCount = 0;
+struct IcsElement *parentStack[IE_MAX_DEPTH]; int parentStackCount = 0;
 
 void processLine(char *title, char *content) {
 	int childBufPrefillSize = 0;
 	if(strcmp(title, "BEGIN") == 0) childBufPrefillSize = 20;
-	struct CalendarElement *element = ce_create(title, content, childBufPrefillSize);
+	struct IcsElement *element = ie_create(title, content, childBufPrefillSize);
 	if(head == 0) {
 		head = element;
 		parentStack[0] = element;
@@ -85,7 +85,7 @@ void processLine(char *title, char *content) {
 		return;
 	}
 
-	ce_addchild(parentStack[parentStackCount - 1], element);
+	ie_addchild(parentStack[parentStackCount - 1], element);
 
 	if(strcmp(title, "BEGIN") == 0) {
 		parentStack[parentStackCount] = element;

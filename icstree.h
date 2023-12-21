@@ -1,6 +1,6 @@
-struct CalendarElement {
-        struct CalendarElement **children;
-	struct CalendarElement *parent;
+struct IcsElement {
+        struct IcsElement **children;
+	struct IcsElement *parent;
 
         int childCount;
         int childBufLen;
@@ -9,9 +9,9 @@ struct CalendarElement {
         char *content;
 };
 
-struct CalendarElement *ce_create(char *title, char *content, int preallocChildLength);
-void ce_free(struct CalendarElement *element);
-void ce_freeall(struct CalendarElement *head);
-void ce_addchild(struct CalendarElement *parent, struct CalendarElement *child);
-void ce_print(struct CalendarElement *element, int spaces);
-void ce_printall(struct CalendarElement *element);
+struct IcsElement *ie_create(char *title, char *content, int preallocChildLength);
+void ie_free(struct IcsElement *element);
+void ie_freeall(struct IcsElement *head);
+void ie_addchild(struct IcsElement *parent, struct IcsElement *child);
+void ie_print(struct IcsElement *element, int spaces);
+void ie_printall(struct IcsElement *element);
